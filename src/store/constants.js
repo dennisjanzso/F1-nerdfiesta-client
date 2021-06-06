@@ -1,0 +1,2 @@
+
+export const CURRENT_IMAGE_ID = "CURRENT_IMAGE_ID";
