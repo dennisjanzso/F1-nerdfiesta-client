@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api_url = 'http://127.0.0.1:5000';
+const api_url = 'http://127.0.0.1:8080';
 
 export function getConnection () {
     return axios.get(api_url + '/')
@@ -15,6 +15,38 @@ export function getPastRaces () {
 export function getFutureRaces () {
     return axios.get(api_url + '/future-races')
     .then(response => {return response})
+}
+
+export function getCurrentDrivers () {
+    return axios.get(api_url + '/current-drivers')
+    .then(response => {return response})
+}
+
+export function getDriverDetails (driverId) {
+    const data = {"driverId": driverId};
+    return axios.post(api_url + '/driver-details', data, {
+        headers:{
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {return response})
+}
+
+export function getDriverPlot (driverId) {
+    const data = {"driverId": driverId}
+    return axios.post(api_url + '/driver-plot', data, { responseType: 'arraybuffer' ,
+        headers:{
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        let blob = new Blob(
+            [response.data], 
+            { type: response.headers['content-type'] }
+        )
+        let image = URL.createObjectURL(blob)
+        return image
+    })
 }
 
 export function getRacePlot (raceId) {

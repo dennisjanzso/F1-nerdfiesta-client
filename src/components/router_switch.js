@@ -10,6 +10,8 @@ import Home from './home';
 import RaceWrapper from './race_wrapper';
 import RaceView from './race_view';
 import PredictionView from "./prediction_view";
+import DriverList from "./driver_list";
+import DriverView from './driver_view';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -31,6 +33,12 @@ function RouterSwitch () {
       </Route>
       <Route path='/prediction'>
         <PredictionView raceId={query.get("raceId")}/>
+      </Route>
+      <Route path='/drivers'>
+        <DriverList/>
+      </Route>
+      <Route path='/driver'>
+        <DriverView driverId={query.get("driverId")}/>
       </Route>
     </Switch>
   )

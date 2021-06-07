@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { getPredictionPlot, getRacePlot, getRacePrediction } from "../models";
+import { getPredictionPlot, getRacePlot, getRacePrediction, getRaceDetails } from "../models";
 import PositionList from "./UI/position_list";
 import Preloader from "./UI/preloader";
 
@@ -17,7 +17,8 @@ function PredictionView(props) {
     'qualy_plot': null,
     'race_plot': null,
     'race_prediction': null,
-    'weather': 'dry'
+    'weather': 'dry',
+    'details': null,
   })
 
   const prevState = usePrevious(state);
@@ -40,7 +41,16 @@ function PredictionView(props) {
     setState((prevState) => ({ ...prevState, race_plot: res}));
   }
 
+  async function loadRaceDetails () {
+    let res_promise = getRaceDetails(props.raceId);
+    let res = await res_promise;
+    setState((prevState) => ({ ...prevState, details: res['data']}));
+  }
+
   const didUpdate = () => {
+    if (state.details === null) {
+      loadRaceDetails()
+    }
     if (state.race_prediction === null) {
       getPrediction();
     } 
@@ -56,7 +66,7 @@ function PredictionView(props) {
   
   return (
     <div>
-        {console.log(state)}
+      {state.details === null ? <Preloader /> :
       <div class="row">
         <div class="col s1">
           <a href='/races' style={{color: '#de0f17', maxHeight: '80%'}}>
@@ -64,9 +74,13 @@ function PredictionView(props) {
           </a>
         </div>
         <div class="col s11">
-          <h5 style={{'marginLeft': '1em'}}>{props.raceId}</h5>
+          <h5 style={{'marginLeft': '1em'}}>{state.details.race[0].name_x}</h5>
+          <small>Round: {state.details.race[0].round}</small>
+          <small style={{paddingLeft: '2em'}}>Date: {state.details.race[0].date}</small>
+          <br />
+          <small>Track: {state.details.race[0].name_y}</small>
         </div>
-      </div>
+      </div>}
       <div class="row">
         {state.race_prediction === null ? <Preloader progressInfo="Loading race prediction"/>:
           <div class="card" style={{'background-color': '#de0f17', 

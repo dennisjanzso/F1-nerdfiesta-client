@@ -22,19 +22,11 @@ function PositionList(props) {
         </thead>
         <tbody>
           {props.results.map((res, index) => 
-            <div>
-            {prediction ?
-              <tr>
-                <td style={{padding: '5px 5px'}}>{res['driverRef']}</td>
-                <td style={{padding: '5px 5px'}}>{res['pred_r_score'] === null ? 'NA' : res['pred_r_score']}</td>
-                <td style={{padding: '5px 5px'}}>{index + 1}</td>
-              </tr> :
-              <tr>
-                <td style={{padding: '5px 5px'}}>{res['surname']}</td>
-                <td style={{padding: '5px 5px'}}>{res['grid']}</td>
-                <td style={{padding: '5px 5px'}}>{res['positionText']}</td>
-              </tr>}
-            </div>
+            <tr>
+              {prediction ? <td style={{padding: '5px 5px'}}>{res['driverRef']}</td> : <td style={{padding: '5px 5px'}}>{res['surname']}</td>}
+              {prediction ? <td style={{padding: '5px 5px'}}>{res['pred_r_score'] === null ? 'NA' : res['pred_r_score']}</td> : <td style={{padding: '5px 5px'}}>{res['grid']}</td>}
+              {prediction ? <td style={{padding: '5px 5px'}}>{index + 1}</td> : <td style={{padding: '5px 5px'}}>{res['positionText']}</td>}
+            </tr>
           )}
         </tbody>
       </table>

@@ -55,16 +55,24 @@ function RaceView(props) {
   
   return (
     <div>
+      {state.details === null ? <Preloader /> :
       <div class="row">
+        {console.log(state.details.race[0])}
         <div class="col s1">
           <a href='/races' style={{color: '#de0f17', maxHeight: '80%'}}>
             <i class="large material-icons" style={{fontSize: '4rem', position: 'relative', top: '25%', left: '10%'}}>arrow_back</i>
           </a>
         </div>
         <div class="col s11">
-          <h5 style={{'marginLeft': '1em'}}>{props.raceId}</h5>
+          <h5 style={{'marginLeft': '1em'}}>{state.details.race[0].name_x}</h5>
+          <small>Round: {state.details.race[0].round}</small>
+          <small style={{paddingLeft: '2em'}}>Date: {state.details.race[0].date}</small>
+          <br />
+          <small>Track: {state.details.race[0].name_y}</small>
+          <br />
+          <small>Weather: {state.details.race[0].weather}</small>
         </div>
-      </div>
+      </div>}
       <div class="row">
         <div class='col s4'>
           {state.results === null ? null : <PositionList results={state.results} />}
@@ -74,8 +82,8 @@ function RaceView(props) {
           'max-height': '60%',
           'margin': '2em'}}>
             {state.image === null ? <Preloader />: 
-            <img src={state.image} style={{'max-width': '65%', 'max-height': '80%', 'margin': '2em',
-            'position': 'relative', 'left': '30%'}}/>}
+            <img src={state.image} style={{'max-width': '96%', 'max-height': '80%', 'margin': '1em',
+            'position': 'relative', 'left': '0%'}}/>}
           </div>
         </div>
       </div>
