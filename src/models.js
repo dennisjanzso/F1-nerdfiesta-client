@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api_url = 'http://127.0.0.1:8080';
+const api_url = 'http://0.0.0.0:8080';
 
 export function getConnection () {
     return axios.get(api_url + '/')
@@ -99,6 +99,22 @@ export function getRacePrediction (raceId, weather) {
 export function getPredictionPlot (ticket, kind) {
     const data = {"ticket": ticket, "kind": kind};
     return axios.post(api_url + '/prediction-plot', data, { responseType: 'arraybuffer' ,
+        headers:{
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        let blob = new Blob(
+            [response.data], 
+            { type: response.headers['content-type'] }
+        )
+        let image = URL.createObjectURL(blob)
+        return image
+    })
+}
+
+export function getMentionsPlot () {
+    return axios.get(api_url + '/mentions-plot', { responseType: 'arraybuffer' ,
         headers:{
             'Content-Type': 'application/json',
         }
